@@ -32,17 +32,11 @@ library CanonicalMachine {
     /// @notice Maximum input size (32 megabytes).
     Log2Size constant INPUT_MAX_LOG2_SIZE = Log2Size.wrap(25);
 
-    /// @notice Maximum voucher metadata memory range (2 megabytes).
-    Log2Size constant VOUCHER_METADATA_LOG2_SIZE = Log2Size.wrap(21);
+    /// @notice Maximum output metadata memory range (2 megabytes).
+    Log2Size constant OUTPUT_METADATA_LOG2_SIZE = Log2Size.wrap(21);
 
-    /// @notice Maximum notice metadata memory range (2 megabytes).
-    Log2Size constant NOTICE_METADATA_LOG2_SIZE = Log2Size.wrap(21);
-
-    /// @notice Maximum epoch voucher memory range (128 megabytes).
-    Log2Size constant EPOCH_VOUCHER_LOG2_SIZE = Log2Size.wrap(37);
-
-    /// @notice Maximum epoch notice memory range (128 megabytes).
-    Log2Size constant EPOCH_NOTICE_LOG2_SIZE = Log2Size.wrap(37);
+    /// @notice Maximum epoch output memory range (128 megabytes).
+    Log2Size constant EPOCH_OUTPUT_LOG2_SIZE = Log2Size.wrap(37);
 
     /// @notice Unwrap `s` into its underlying uint64 value.
     /// @param s Base-2 logarithm of some number of bytes
