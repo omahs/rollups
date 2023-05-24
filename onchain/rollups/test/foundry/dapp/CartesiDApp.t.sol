@@ -115,12 +115,16 @@ contract CartesiDAppTest is TestBase {
     function logInput(
         uint256 number,
         address sender,
-        bytes memory payload
+        bytes memory input
     ) internal view {
         console.log("Proof for output %d might be outdated.", number);
         console.log(sender);
-        console.logBytes(payload);
+        console.logBytes(input);
         console.log("For more info, see `test/foundry/dapp/helper/README.md`.");
+    }
+
+    function logOutput(uint256 number, bytes memory output) internal view {
+        logInput(number, noticeSender, output); // FIXME
     }
 
     function logVoucher(
@@ -128,11 +132,11 @@ contract CartesiDAppTest is TestBase {
         address destination,
         bytes memory payload
     ) internal view {
-        logInput(number, destination, payload);
+        logOutput(number, this.encodeVoucher(destination, payload));
     }
 
     function logNotice(uint256 number, bytes memory notice) internal view {
-        logInput(number, noticeSender, notice);
+        logOutput(number, this.encodeNotice(notice));
     }
 
     // test notices
@@ -145,7 +149,7 @@ contract CartesiDAppTest is TestBase {
         registerProof(
             _inboxInputIndex,
             _numInputsAfter,
-            LibOutputProof0.getNoticeProof()
+            LibOutputProof0.getProof()
         );
 
         bytes memory notice = abi.encodePacked(bytes4(0xfafafafa));
@@ -311,7 +315,7 @@ contract CartesiDAppTest is TestBase {
     ) public {
         setupERC20TransferVoucher(_inboxInputIndex, _numInputsAfter);
 
-        proof.validity.vouchersEpochRootHash = bytes32(uint256(0xdeadbeef));
+        proof.validity.outputsEpochRootHash = bytes32(uint256(0xdeadbeef));
 
         vm.expectRevert(LibOutputValidation.IncorrectEpochHash.selector);
         dapp.executeVoucher(address(erc20Token), erc20TransferPayload, proof);
@@ -385,7 +389,7 @@ contract CartesiDAppTest is TestBase {
         registerProof(
             _inboxInputIndex,
             _numInputsAfter,
-            LibOutputProof1.getVoucherProof()
+            LibOutputProof1.getProof()
         );
     }
 
@@ -408,7 +412,7 @@ contract CartesiDAppTest is TestBase {
         registerProof(
             _inboxInputIndex,
             _numInputsAfter,
-            LibOutputProof2.getVoucherProof()
+            LibOutputProof2.getProof()
         );
 
         // not able to execute voucher because dapp has 0 balance
@@ -553,7 +557,7 @@ contract CartesiDAppTest is TestBase {
         registerProof(
             _inboxInputIndex,
             _numInputsAfter,
-            LibOutputProof3.getVoucherProof()
+            LibOutputProof3.getProof()
         );
 
         // not able to execute voucher because dapp doesn't have the nft
@@ -709,10 +713,22 @@ contract CartesiDAppTest is TestBase {
         return
             keccak256(
                 abi.encodePacked(
-                    _validity.vouchersEpochRootHash,
-                    _validity.noticesEpochRootHash,
+                    _validity.outputsEpochRootHash,
                     _validity.machineStateHash
                 )
             );
+    }
+
+    function encodeNotice(
+        bytes calldata notice
+    ) external pure returns (bytes memory) {
+        return OutputEncoding.encodeNotice(notice);
+    }
+
+    function encodeVoucher(
+        address destination,
+        bytes calldata payload
+    ) external pure returns (bytes memory) {
+        return OutputEncoding.encodeVoucher(destination, payload);
     }
 }

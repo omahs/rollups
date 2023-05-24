@@ -19,8 +19,7 @@ import {OutputEncoding} from "../common/OutputEncoding.sol";
 /// @param inputIndex Which input, inside the epoch, the output belongs to
 /// @param outputIndex Index of output emitted by the input
 /// @param outputHashesRootHash Merkle root of hashes of outputs emitted by the input
-/// @param vouchersEpochRootHash Merkle root of all epoch's voucher metadata hashes
-/// @param noticesEpochRootHash Merkle root of all epoch's notice metadata hashes
+/// @param outputsEpochRootHash Merkle root of all epoch's voucher metadata hashes
 /// @param machineStateHash Hash of the machine state claimed this epoch
 /// @param keccakInHashesSiblings Proof that this output metadata is in metadata memory range
 /// @param outputHashesInEpochSiblings Proof that this output metadata is in epoch's output memory range
@@ -28,8 +27,7 @@ struct OutputValidityProof {
     uint64 inputIndex;
     uint64 outputIndex;
     bytes32 outputHashesRootHash;
-    bytes32 vouchersEpochRootHash;
-    bytes32 noticesEpochRootHash;
+    bytes32 outputsEpochRootHash;
     bytes32 machineStateHash;
     bytes32[] keccakInHashesSiblings;
     bytes32[] outputHashesInEpochSiblings;
@@ -57,24 +55,17 @@ library LibOutputValidation {
 
     /// @notice Make sure the output proof is valid, otherwise revert.
     /// @param v The output validity proof
-    /// @param encodedOutput The encoded output
+    /// @param output The output
     /// @param epochHash The hash of the epoch in which the output was generated
-    /// @param outputsEpochRootHash Either `v.vouchersEpochRootHash` (for vouchers)
-    ///                             or `v.noticesEpochRootHash` (for notices)
-    function validateEncodedOutput(
+    function validateOutput(
         OutputValidityProof calldata v,
-        bytes memory encodedOutput,
-        bytes32 epochHash,
-        bytes32 outputsEpochRootHash
+        bytes memory output,
+        bytes32 epochHash
     ) internal pure {
         // prove that outputs hash is represented in a finalized epoch
         if (
             keccak256(
-                abi.encodePacked(
-                    v.vouchersEpochRootHash,
-                    v.noticesEpochRootHash,
-                    v.machineStateHash
-                )
+                abi.encodePacked(v.outputsEpochRootHash, v.machineStateHash)
             ) != epochHash
         ) {
             revert IncorrectEpochHash();
@@ -91,7 +82,7 @@ library LibOutputValidation {
                 CanonicalMachine.EPOCH_OUTPUT_LOG2_SIZE.uint64OfSize(),
                 v.outputHashesRootHash,
                 v.outputHashesInEpochSiblings
-            ) != outputsEpochRootHash
+            ) != v.outputsEpochRootHash
         ) {
             revert IncorrectOutputsEpochRootHash();
         }
@@ -114,7 +105,7 @@ library LibOutputValidation {
         // is contained in it. We can't simply use hashOfOutput because the
         // log2size of the leaf is three (8 bytes) not  five (32 bytes)
         bytes32 merkleRootOfHashOfOutput = MerkleV2.getMerkleRootFromBytes(
-            abi.encodePacked(keccak256(encodedOutput)),
+            abi.encodePacked(keccak256(abi.encode(output))),
             CanonicalMachine.KECCAK_LOG2_SIZE.uint64OfSize()
         );
 
@@ -147,15 +138,10 @@ library LibOutputValidation {
         bytes calldata payload,
         bytes32 epochHash
     ) internal pure {
-        bytes memory encodedVoucher = OutputEncoding.encodeVoucher(
-            destination,
-            payload
-        );
-        validateEncodedOutput(
+        validateOutput(
             v,
-            encodedVoucher,
-            epochHash,
-            v.vouchersEpochRootHash
+            OutputEncoding.encodeVoucher(destination, payload),
+            epochHash
         );
     }
 
@@ -168,13 +154,7 @@ library LibOutputValidation {
         bytes calldata notice,
         bytes32 epochHash
     ) internal pure {
-        bytes memory encodedNotice = OutputEncoding.encodeNotice(notice);
-        validateEncodedOutput(
-            v,
-            encodedNotice,
-            epochHash,
-            v.noticesEpochRootHash
-        );
+        validateOutput(v, OutputEncoding.encodeNotice(notice), epochHash);
     }
 
     /// @notice Get the position of a voucher on the bit mask.

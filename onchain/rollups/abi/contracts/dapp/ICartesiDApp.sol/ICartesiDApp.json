@@ -58,12 +58,7 @@
               },
               {
                 "internalType": "bytes32",
-                "name": "vouchersEpochRootHash",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "noticesEpochRootHash",
+                "name": "outputsEpochRootHash",
                 "type": "bytes32"
               },
               {
@@ -175,12 +170,7 @@
               },
               {
                 "internalType": "bytes32",
-                "name": "vouchersEpochRootHash",
-                "type": "bytes32"
-              },
-              {
-                "internalType": "bytes32",
-                "name": "noticesEpochRootHash",
+                "name": "outputsEpochRootHash",
                 "type": "bytes32"
               },
               {
