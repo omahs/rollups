@@ -17,7 +17,11 @@ import { parseUnits } from "@ethersproject/units";
 import { AuthorityCreatedEvent } from "@cartesi/rollups/dist/src/types/contracts/consensus/authority/IAuthorityFactory";
 
 import { BlockchainArgs, blockchainBuilder } from "../args";
-import { authorityFactory, authorityHistoryPairFactory, inputBox } from "../connect";
+import {
+    authorityFactory,
+    authorityHistoryPairFactory,
+    inputBox,
+} from "../connect";
 import { safeHandler } from "../util";
 
 interface Args extends BlockchainArgs {

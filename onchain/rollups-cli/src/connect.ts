@@ -108,11 +108,10 @@ export const dappFactory = getContractConnector<CartesiDAppFactory>(
     CartesiDAppFactory__factory
 );
 
-export const authorityFactory =
-    getContractConnector<AuthorityFactory>(
-        "AuthorityFactory",
-        AuthorityFactory__factory
-    );
+export const authorityFactory = getContractConnector<AuthorityFactory>(
+    "AuthorityFactory",
+    AuthorityFactory__factory
+);
 
 export const authorityHistoryPairFactory =
     getContractConnector<AuthorityHistoryPairFactory>(
