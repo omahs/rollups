@@ -31,12 +31,7 @@ library InputEncoding {
         uint256 value,
         bytes calldata execLayerData
     ) internal pure returns (bytes memory) {
-        return
-            abi.encodePacked(
-                sender, //              20B
-                value, //               32B
-                execLayerData //        arbitrary size
-            );
+        return abi.encode(sender, value, execLayerData);
     }
 
     /// @notice Encode an ERC-20 token deposit.
@@ -53,14 +48,7 @@ library InputEncoding {
         uint256 amount,
         bytes calldata execLayerData
     ) internal pure returns (bytes memory) {
-        return
-            abi.encodePacked(
-                ret, //                 1B
-                token, //               20B
-                sender, //              20B
-                amount, //              32B
-                execLayerData //        arbitrary size
-            );
+        return abi.encode(ret, token, sender, amount, execLayerData);
     }
 
     /// @notice Encode an ERC-721 token deposit.
@@ -78,14 +66,7 @@ library InputEncoding {
         bytes calldata baseLayerData,
         bytes calldata execLayerData
     ) internal pure returns (bytes memory) {
-        bytes memory data = abi.encode(baseLayerData, execLayerData);
-        return
-            abi.encodePacked(
-                token, //               20B
-                sender, //              20B
-                tokenId, //             32B
-                data //                 arbitrary size
-            );
+        return abi.encode(token, sender, tokenId, baseLayerData, execLayerData);
     }
 
     /// @notice Encode an ERC-1155 single token deposit.
@@ -105,14 +86,14 @@ library InputEncoding {
         bytes calldata baseLayerData,
         bytes calldata execLayerData
     ) internal pure returns (bytes memory) {
-        bytes memory data = abi.encode(baseLayerData, execLayerData);
         return
-            abi.encodePacked(
-                token, //               20B
-                sender, //              20B
-                tokenId, //             32B
-                value, //               32B
-                data //                 arbitrary size
+            abi.encode(
+                token,
+                sender,
+                tokenId,
+                value,
+                baseLayerData,
+                execLayerData
             );
     }
 
@@ -133,17 +114,14 @@ library InputEncoding {
         bytes calldata baseLayerData,
         bytes calldata execLayerData
     ) internal pure returns (bytes memory) {
-        bytes memory data = abi.encode(
-            tokenIds,
-            values,
-            baseLayerData,
-            execLayerData
-        );
         return
-            abi.encodePacked(
-                token, //                   20B
-                sender, //                  20B
-                data //                     arbitrary size
+            abi.encode(
+                token,
+                sender,
+                tokenIds,
+                values,
+                baseLayerData,
+                execLayerData
             );
     }
 
@@ -153,9 +131,6 @@ library InputEncoding {
     function encodeDAppAddressRelay(
         address dapp
     ) internal pure returns (bytes memory) {
-        return
-            abi.encodePacked(
-                dapp //                     20B
-            );
+        return abi.encode(dapp);
     }
 }
