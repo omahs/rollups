@@ -76,7 +76,7 @@ impl BrokerFacade {
             return Ok(INITIAL_ID.to_owned());
         } else {
             // This won't underflow because we know the epoch is not 0
-            epoch = epoch - 1;
+            epoch -= 1;
         }
 
         tracing::trace!(epoch, "searching for finish epoch input event");
