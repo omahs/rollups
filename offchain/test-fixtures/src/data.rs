@@ -13,10 +13,10 @@
 use rollups_data::run_migrations;
 use testcontainers::{clients::Cli, images::postgres::Postgres, Container};
 
-pub const POSTGRES_DB: &'static str = "postgres";
-pub const POSTGRES_USER: &'static str = "postgres";
-pub const POSTGRES_PASSWORD: &'static str = "pw";
-pub const POSTGRES_HOST: &'static str = "localhost";
+pub const POSTGRES_DB: &str = "postgres";
+pub const POSTGRES_USER: &str = "postgres";
+pub const POSTGRES_PASSWORD: &str = "pw";
+pub const POSTGRES_HOST: &str = "localhost";
 
 pub struct DataFixture<'d> {
     _node: Container<'d, Postgres>,

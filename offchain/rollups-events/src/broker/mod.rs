@@ -26,7 +26,7 @@ pub use redacted::{RedactedUrl, Url};
 
 pub mod indexer;
 
-pub const INITIAL_ID: &'static str = "0";
+pub const INITIAL_ID: &str = "0";
 
 /// Client that connects to the broker
 #[derive(Clone)]
