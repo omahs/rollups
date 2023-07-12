@@ -219,7 +219,7 @@ fn decode_filename(path: &Path) -> Result<(u64, u64), FSSnapshotError> {
     })?;
     tracing::trace!(file_name, "got snapshot file name");
 
-    let parts: Vec<_> = file_name.split("_").collect();
+    let parts: Vec<_> = file_name.split('_').collect();
     ensure!(
         parts.len() == 2,
         DirNameSnafu {
