@@ -108,7 +108,7 @@ impl Signer for AwsSigner {
     }
 
     fn address(&self) -> Address {
-        self.address.clone()
+        self.address
     }
 
     fn chain_id(&self) -> u64 {
@@ -120,7 +120,7 @@ impl Signer for AwsSigner {
             key_id: self.key_id.clone(),
             chain_id: chain_id.into(),
             region: self.region.clone(),
-            address: self.address.clone(),
+            address: self.address,
         }
     }
 }
