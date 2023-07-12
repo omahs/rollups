@@ -89,8 +89,7 @@ impl Broker {
             .keys
             .iter_mut()
             .find(|stream| stream.key == input_stream_key)
-            .map(|stream| stream.ids.pop())
-            .flatten();
+            .and_then(|stream| stream.ids.pop());
         if let Some(stream_id) = input_stream_id {
             tracing::trace!("found input event; parsing it");
             let event: Event<RollupsInput> = stream_id.try_into()?;
@@ -102,8 +101,7 @@ impl Broker {
             .keys
             .iter_mut()
             .find(|stream| stream.key == output_stream_key)
-            .map(|stream| stream.ids.pop())
-            .flatten();
+            .and_then(|stream| stream.ids.pop());
         if let Some(stream_id) = output_stream_id {
             tracing::trace!("found output event; parsing it");
             let event: Event<RollupsOutput> = stream_id.try_into()?;

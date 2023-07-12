@@ -213,11 +213,10 @@ fn encode_filename(epoch: u64, processed_input_count: u64) -> String {
 fn decode_filename(path: &Path) -> Result<(u64, u64), FSSnapshotError> {
     let file_name = path
         .file_name()
-        .map(|file_name| file_name.to_str())
-        .flatten()
+        .and_then(|file_name| file_name.to_str())
         .context(DirNameSnafu {
-            path: path.to_owned(),
-        })?;
+        path: path.to_owned(),
+    })?;
     tracing::trace!(file_name, "got snapshot file name");
 
     let parts: Vec<_> = file_name.split("_").collect();
