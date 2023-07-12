@@ -10,12 +10,12 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-///! This module is an indexer-specific extension for the broker
-///!
-///! It would be too complex to implement the indexer extension as a generic broker method.
-///! Instead, we decided to implement the extension that we need for the indexer as a submodule.
-///! This extension should be in this crate because it accesses the Redis interface directly.
-///! (All Redis interaction should be hidden in this crate.)
+//! This module is an indexer-specific extension for the broker
+//!
+//! It would be too complex to implement the indexer extension as a generic broker method.
+//! Instead, we decided to implement the extension that we need for the indexer as a submodule.
+//! This extension should be in this crate because it accesses the Redis interface directly.
+//! (All Redis interaction should be hidden in this crate.)
 use backoff::future::retry;
 use redis::streams::{StreamReadOptions, StreamReadReply};
 use redis::AsyncCommands;
