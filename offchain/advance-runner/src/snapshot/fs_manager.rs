@@ -181,7 +181,7 @@ impl SnapshotManager for FSSnapshotManager {
                     path: latest.clone()
                 }
             );
-            fs::remove_file(&latest).context(SetLatestSnafu {
+            fs::remove_file(latest).context(SetLatestSnafu {
                 path: latest.clone(),
             })?;
             tracing::trace!("deleted previous latest symlink");
@@ -197,7 +197,7 @@ impl SnapshotManager for FSSnapshotManager {
 
         // delete other snapshots
         for path in snapshots.iter() {
-            fs::remove_dir_all(&path)
+            fs::remove_dir_all(path)
                 .context(RemoveSnafu { path: path.clone() })?;
         }
         tracing::trace!("deleted previous snapshots");

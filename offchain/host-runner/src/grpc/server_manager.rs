@@ -314,7 +314,7 @@ impl SessionManager {
     }
 
     async fn try_del_session(&self, request_id: &String) -> Result<(), Status> {
-        self.try_get_session(&request_id)
+        self.try_get_session(request_id)
             .await?
             .try_lock()
             .or(Err(Status::aborted("concurrent call in session")))?

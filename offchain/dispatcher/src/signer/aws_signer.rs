@@ -97,14 +97,14 @@ impl Signer for AwsSigner {
         &self,
         message: &TypedTransaction,
     ) -> Result<Signature, Self::Error> {
-        inner_aws_signer_call!(&self, sign_transaction, message)
+        inner_aws_signer_call!(self, sign_transaction, message)
     }
 
     async fn sign_typed_data<T: Eip712 + Send + Sync>(
         &self,
         payload: &T,
     ) -> Result<Signature, Self::Error> {
-        inner_aws_signer_call!(&self, sign_typed_data, payload)
+        inner_aws_signer_call!(self, sign_typed_data, payload)
     }
 
     fn address(&self) -> Address {
