@@ -161,7 +161,7 @@ impl ServerManager for ServerManagerService {
     ) -> Result<Response<FinishEpochResponse>, Status> {
         let request = request.into_inner();
         tracing::info!("received finish_epoch with id={}", request.session_id);
-        if request.storage_directory != "" {
+        if !request.storage_directory.is_empty() {
             tracing::warn!("ignoring storage_directory parameter");
         }
         let response = self
@@ -278,7 +278,7 @@ impl SessionManager {
         processed_input_count: u64,
         controller: Controller,
     ) -> Result<(), Status> {
-        if session_id == "" {
+        if session_id.is_empty() {
             return Err(Status::invalid_argument("session id is empty"));
         }
         let mut entry = self.entry.lock().await;
