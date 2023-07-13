@@ -50,7 +50,7 @@ impl DataFixture<'_> {
             POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, port, POSTGRES_DB
         );
 
-        let _migration = run_migrations(&pg_endpoint).unwrap();
+        run_migrations(&pg_endpoint).unwrap();
 
         DataFixture {
             _node: node,
