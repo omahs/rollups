@@ -306,7 +306,7 @@ fn build_next_input(
     let data = RollupsData::AdvanceStateInput(RollupsAdvanceStateInput {
         metadata,
         payload: input.payload.clone().into(),
-        tx_hash: (*input.tx_hash).0.into(),
+        tx_hash: input.tx_hash.0.into(),
     });
 
     RollupsInput {
