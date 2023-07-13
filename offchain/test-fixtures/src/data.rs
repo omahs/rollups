@@ -57,7 +57,7 @@ impl DataFixture<'_> {
             user: POSTGRES_USER.to_string(),
             password: POSTGRES_PASSWORD.to_string(),
             hostname: POSTGRES_HOST.to_string(),
-            port: port,
+            port,
             db: POSTGRES_DB.to_string(),
             endpoint: pg_endpoint,
         }
