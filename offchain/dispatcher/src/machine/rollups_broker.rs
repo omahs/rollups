@@ -106,7 +106,7 @@ impl BrokerFacade {
     #[tracing::instrument(level = "trace", skip_all)]
     async fn claim(
         &self,
-        id: &String,
+        id: &str,
     ) -> Result<Option<Event<RollupsClaim>>, BrokerFacadeError> {
         let mut broker = self.broker.lock().await;
         let event = broker
