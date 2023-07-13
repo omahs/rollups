@@ -684,7 +684,7 @@ impl Epoch {
         self.state = EpochState::Finished;
 
         let machine_state_hash = GrpcHash {
-            data: vec![0 as u8; HASH_SIZE],
+            data: vec![0_u8; HASH_SIZE],
         };
         let mut proofs: Vec<GrpcProof> = vec![];
         let index = Token::Int(U256::from(epoch_index));
@@ -902,7 +902,7 @@ impl Epoch {
         &self,
         processed_input_count_within_epoch: u64,
     ) -> Result<(), Status> {
-        if self.get_num_processed_inputs_within_epoch() as u64
+        if self.get_num_processed_inputs_within_epoch()
             != processed_input_count_within_epoch
         {
             Err(Status::invalid_argument(format!(
