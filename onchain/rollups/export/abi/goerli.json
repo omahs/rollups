@@ -3,7 +3,7 @@
   "chainId": "5",
   "contracts": {
     "Authority": {
-      "address": "0x35EC7d70cAff883844d94b54cD19634fFAb5d8CC",
+      "address": "0x5bA88473Ac88aE155c1bd28cdd05F1A80e3bba18",
       "abi": [
         {
           "inputs": [
@@ -578,7 +578,7 @@
       ]
     },
     "History": {
-      "address": "0xFB34DaDd5f3Aba55004C448AcFd24fAF5A4Ff83E",
+      "address": "0xa860738792a1e216CF57E7375D5A8637762538F5",
       "abi": [
         {
           "inputs": [
